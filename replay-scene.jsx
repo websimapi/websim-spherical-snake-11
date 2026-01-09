@@ -18,11 +18,13 @@ const ReplayScene = ({ data, isMuted }) => {
           const payload = typeof evt === "string" ? null : evt.payload;
           const url = data.config.sounds && data.config.sounds[name];
           if (url) {
+            const volume = payload && typeof payload.volume === "number" ? payload.volume : 1;
             cues.push({
               id: `sfx-${idx}-${i}-${name}`,
               frame: idx,
               src: url,
-              name
+              name,
+              volume
             });
           }
           if (name === "ripple" && payload) {
@@ -205,7 +207,7 @@ const ReplayScene = ({ data, isMuted }) => {
   return /* @__PURE__ */ jsxDEV(AbsoluteFill, { children: [
     /* @__PURE__ */ jsxDEV("div", { ref: containerRef, style: { width: "100%", height: "100%" } }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 280,
+      lineNumber: 282,
       columnNumber: 13
     }),
     /* @__PURE__ */ jsxDEV("div", { style: {
@@ -246,7 +248,7 @@ const ReplayScene = ({ data, isMuted }) => {
           false,
           {
             fileName: "<stdin>",
-            lineNumber: 299,
+            lineNumber: 301,
             columnNumber: 21
           }
         ),
@@ -264,12 +266,12 @@ const ReplayScene = ({ data, isMuted }) => {
           whiteSpace: "nowrap"
         }, children: playerInfo.username }, void 0, false, {
           fileName: "<stdin>",
-          lineNumber: 315,
+          lineNumber: 317,
           columnNumber: 21
         })
       ] }, void 0, true, {
         fileName: "<stdin>",
-        lineNumber: 293,
+        lineNumber: 295,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("div", { style: {
@@ -281,29 +283,30 @@ const ReplayScene = ({ data, isMuted }) => {
         marginTop: "10px"
       }, children: score }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 331,
+        lineNumber: 333,
         columnNumber: 17
       })
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 283,
+      lineNumber: 285,
       columnNumber: 13
     }),
     activeCues.map((cue) => {
       const duration = cue.name === "die" ? 150 : 30;
-      return /* @__PURE__ */ jsxDEV(Sequence, { from: cue.frame, durationInFrames: duration, children: /* @__PURE__ */ jsxDEV(Audio, { src: cue.src, volume: isMuted ? 0 : 0.5 }, void 0, false, {
+      const finalVolume = isMuted ? 0 : 0.5 * (cue.volume ?? 1);
+      return /* @__PURE__ */ jsxDEV(Sequence, { from: cue.frame, durationInFrames: duration, children: /* @__PURE__ */ jsxDEV(Audio, { src: cue.src, volume: finalVolume }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 347,
+        lineNumber: 351,
         columnNumber: 25
       }) }, cue.id, false, {
         fileName: "<stdin>",
-        lineNumber: 346,
+        lineNumber: 350,
         columnNumber: 21
       });
     })
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 279,
+    lineNumber: 281,
     columnNumber: 9
   });
 };

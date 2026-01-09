@@ -21,12 +21,14 @@ export class AudioManager {
         }
     }
 
-    play(name) {
+    play(name, volume = 1.0) {
         if (!this.enabled || this.muted) return;
         if (this.sounds[name] && this.audioCtx.state === 'running') {
             const source = this.audioCtx.createBufferSource();
+            const gainNode = this.audioCtx.createGain();
+            gainNode.gain.value = volume;
             source.buffer = this.sounds[name];
-            source.connect(this.masterGain);
+            source.connect(gainNode).connect(this.masterGain);
             source.start(0);
         }
     }

@@ -238,9 +238,9 @@ export class Game {
         }
     }
 
-    playSound(name) {
-        this.audioManager.play(name);
-        this.recorder.recordEvent(name, null);
+    playSound(name, volume = 1.0) {
+        this.audioManager.play(name, volume);
+        this.recorder.recordEvent(name, { volume });
     }
 
     setTarget(point) {
@@ -310,7 +310,7 @@ export class Game {
         const collisions = this.foodManager.checkCollisions(this.snake.head.position);
         
         if (collisions.mainFood) {
-            this.playSound('eat');
+            this.playSound('eat', 0.33);
             this.score += 5;
             this.growthPoints += 5;
             
@@ -329,7 +329,7 @@ export class Game {
         
         // Sort indices descending to remove safely
         collisions.bonusIndices.sort((a,b) => b-a).forEach(idx => {
-            this.playSound('eat');
+            this.playSound('eat', 0.33);
             this.score += 1;
             this.growthPoints += 1;
             const scoreEl = document.getElementById('player-score');
